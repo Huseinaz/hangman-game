@@ -104,6 +104,13 @@ function restartGame() {
     }, 1000);
 }
 
+document.addEventListener("keypress", function(event) {
+    const pressedKey = event.key.toLowerCase();
+    if (pressedKey >= 'a' && pressedKey <= 'z') {
+        eventHandler(pressedKey);
+    }
+});
+
 function eventHandler(letter) {
     if (!gameOver) {
         const lowercaseLetter = letter.toLowerCase();
