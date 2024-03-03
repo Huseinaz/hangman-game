@@ -23,12 +23,17 @@ letters.forEach(function (letter) {
     letter.addEventListener("click", handleClick);
 })
 
-function checkLetter(s) {
-    return getRandomWord.indexOf(s) > -1
+function isLetterInWord(s) {
+    return selectedWord.indexOf(s) > -1;
 }
 
-function checkWord(s) {
-    return displayWord == getRandomWord;
+function isWordComplete(s) {
+    return displayWord === selectedWord;
+}
+
+function drawDashes() {
+    displayWord = "_".repeat(selectedWord.length);
+    displayDashes(displayWord)
 }
 
 function displayDashes(s) {
@@ -39,11 +44,6 @@ function displayDashes(s) {
     for (let i = 0; i < wordLength; i++) {
         answerSection.innerHTML += `<span>${s[i]}</span>`;
     }
-}
-
-function drawDashes() {
-    displayWord = "_".repeat(selectedWord.length);
-    displayDashes(displayWord)
 }
 
 drawDashes();
@@ -72,5 +72,54 @@ function draw() {
         default:
             wrongTries = 6;
             break;
+    }
+}
+
+function displayLetter(letter) {
+    for (let i = 0; i < selectedWord.length; i++) {
+        if (selectedWord[i] === letter) {
+            str = displayWord.split('');
+            str[i] = letter;
+            str = str.join('');
+            displayWord = str;
+        }
+    }
+}
+
+function checkGameStatus() {
+    if (isWordComplete()) {
+        gameOver = true;
+        alert("You Won!");
+        restartGame();
+    } else if (wrongTries == 6) {
+        gameOver = true;
+        alert("You Lost!");
+        restartGame();
+    }
+}
+
+function restartGame() {
+    setTimeout(function () {
+        location.reload();
+    }, 1000);
+}
+
+function eventHandler(letter) {
+    if (!gameOver) {
+        const lowercaseLetter = letter.toLowerCase();
+        const letterIndex = lowercaseLetter.charCodeAt(0) - 97;
+
+        if (letterIndex >= 0 && letterIndex <= 25) {
+            const letter = letters[letterIndex];
+            letter.classList.add("pressed");
+
+            if (!isLetterInWord(lowercaseLetter)) {
+                draw();
+            } else {
+                displayLetter(lowercaseLetter);
+                displayDashes(displayWord);
+            }
+            checkGameStatus();
+        }
     }
 }
