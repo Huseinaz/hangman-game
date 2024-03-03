@@ -1,6 +1,8 @@
 const letters = document.querySelectorAll('.letter');
 
 let displayWord = "";
+let wrongTries = 0;
+let gameOver = false;
 
 const words = [
     "red",
@@ -34,7 +36,7 @@ function displayDashes(s) {
     const answerSection = document.getElementById("answer-section");
     answerSection.innerHTML = "";
 
-    for(let i = 0; i < wordLength; i++) {
+    for (let i = 0; i < wordLength; i++) {
         answerSection.innerHTML += `<span>${s[i]}</span>`;
     }
 }
@@ -45,3 +47,30 @@ function drawDashes() {
 }
 
 drawDashes();
+
+function draw() {
+    wrongTries++;
+    switch (wrongTries) {
+        case 1:
+            head();
+            break;
+        case 2:
+            body();
+            break;
+        case 3:
+            leftHand();
+            break;
+        case 4:
+            rightHand();
+            break;
+        case 5:
+            leftLeg();
+            break;
+        case 6:
+            rightLeg();
+            break;
+        default:
+            wrongTries = 6;
+            break;
+    }
+}
